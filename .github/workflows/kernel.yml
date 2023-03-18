@@ -4,11 +4,14 @@ on:
   push:
   workflow_dispatch:
     inputs:
-      KERNELSU_CONFIG:
-        description: 'Compile with KernelSU'
+      ROOT_SOLUTIONS:
+        description: 'Root Solutions'
         required: true
-        default: "true"
-        type: boolean
+        default: "KernelSU"
+        type: choice
+        options:
+        - KernelSU
+        - none
 
 jobs:
   build-lemonade-clang:
@@ -30,7 +33,7 @@ jobs:
         bash antman -S=latest
         bash antman --patch=glibc
     - name: Setup KernelSU
-      if: github.event.inputs.KERNELSU_CONFIG != 'false'
+      if: github.event.inputs.ROOT_SOLUTIONS != 'none'
       run: |
         cd kernel/msm-5.4
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
@@ -45,7 +48,7 @@ jobs:
         cp out/msm-5.4-lahaina-nqgki/dist/Image ak3/
         cat out/msm-5.4-lahaina-nqgki/dist/*.dtb > ak3/dtb
         cp out/msm-5.4-lahaina-nqgki/dist/dtbo.img ak3/
-        cd ak3/ && zip -r9 eva-lemonade-$(/bin/date -u '+%d%m%Y%I%M')-clang.zip * -x .git README.md ./*/placeholder
+        cd ak3/ && zip -r9 eva-lemonade-$(/bin/date -u '+%d%m%Y%I%M')-${{ github.event.inputs.ROOT_SOLUTIONS }}-clang.zip * -x .git README.md ./*/placeholder
         cd ../
     - uses: actions/upload-artifact@main
       with:
@@ -64,7 +67,7 @@ jobs:
         repo init -u https://github.com/mvaisakh/android_kernel_manifest -b eva-oneplus-5.4 --depth=1
         repo sync --no-tags --no-clone-bundle -j$(nproc --all)
     - name: Setup KernelSU
-      if: github.event.inputs.KERNELSU_CONFIG != 'false'
+      if: github.event.inputs.ROOT_SOLUTIONS != 'none'
       run: |
         cd kernel/msm-5.4
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
@@ -79,7 +82,7 @@ jobs:
         cp out/msm-5.4-lahaina-nqgki/dist/Image ak3/
         cat out/msm-5.4-lahaina-nqgki/dist/*.dtb > ak3/dtb
         cp out/msm-5.4-lahaina-nqgki/dist/dtbo.img ak3/
-        cd ak3/ && zip -r9 eva-lemonade-$(/bin/date -u '+%d%m%Y%I%M')-gcc.zip * -x .git README.md ./*/placeholder
+        cd ak3/ && zip -r9 eva-lemonade-$(/bin/date -u '+%d%m%Y%I%M')-${{ github.event.inputs.ROOT_SOLUTIONS }}-gcc.zip * -x .git README.md ./*/placeholder
         cd ../
     - uses: actions/upload-artifact@main
       with:
@@ -105,7 +108,7 @@ jobs:
         bash antman -S=latest
         bash antman --patch=glibc
     - name: Setup KernelSU
-      if: github.event.inputs.KERNELSU_CONFIG != 'false'
+      if: github.event.inputs.ROOT_SOLUTIONS != 'none'
       run: |
         cd kernel/msm-5.4
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
@@ -120,7 +123,7 @@ jobs:
         cp out/msm-5.4-lahaina-nqgki/dist/Image ak3/
         cat out/msm-5.4-lahaina-nqgki/dist/*.dtb > ak3/dtb
         cp out/msm-5.4-lahaina-nqgki/dist/dtbo.img ak3/
-        cd ak3/ && zip -r9 eva-martini-$(/bin/date -u '+%d%m%Y%I%M')-clang.zip * -x .git README.md ./*/placeholder
+        cd ak3/ && zip -r9 eva-martini-$(/bin/date -u '+%d%m%Y%I%M')-${{ github.event.inputs.ROOT_SOLUTIONS }}-clang.zip * -x .git README.md ./*/placeholder
         cd ../
     - uses: actions/upload-artifact@main
       with:
@@ -139,7 +142,7 @@ jobs:
         repo init -u https://github.com/mvaisakh/android_kernel_manifest -b eva-oneplus-5.4 --depth=1
         repo sync --no-tags --no-clone-bundle -j$(nproc --all)
     - name: Setup KernelSU
-      if: github.event.inputs.KERNELSU_CONFIG != 'false'
+      if: github.event.inputs.ROOT_SOLUTIONS != 'none'
       run: |
         cd kernel/msm-5.4
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
@@ -154,7 +157,7 @@ jobs:
         cp out/msm-5.4-lahaina-nqgki/dist/Image ak3/
         cat out/msm-5.4-lahaina-nqgki/dist/*.dtb > ak3/dtb
         cp out/msm-5.4-lahaina-nqgki/dist/dtbo.img ak3/
-        cd ak3/ && zip -r9 eva-martini-$(/bin/date -u '+%d%m%Y%I%M')-gcc.zip * -x .git README.md ./*/placeholder
+        cd ak3/ && zip -r9 eva-martini-$(/bin/date -u '+%d%m%Y%I%M')-${{ github.event.inputs.ROOT_SOLUTIONS }}-gcc.zip * -x .git README.md ./*/placeholder
         cd ../
     - uses: actions/upload-artifact@main
       with:
