@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Send message
-      run: curl -s -X POST ${{ env.BOT_MSG_URL }} -d chat_id=${{ env.CHAT_ID }} -d "disable_web_page_preview=true" -d "parse_mode=html" -d text="CI kernel build triggered for <b>OPlus sm8350 Devices</b>"
+      run:  echo "Hello World"
 
   build-lemonade-gcc:
     needs: [bot-notify-ci]
