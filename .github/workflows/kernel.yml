@@ -2,6 +2,7 @@ name: Kernel Build CI
 
 on:
   push:
+  workflow_dispatch:
 
 env:
   BOT_MSG_URL: ${{ secrets.TG_BOT_MSG_URL }}
